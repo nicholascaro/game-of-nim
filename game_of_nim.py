@@ -12,7 +12,7 @@ class GameOfNim(Game):
         moves = [(i, j+1) for i, val in enumerate(board)
                  if val != 0 for j in range(val)]
         self.initial = GameState(
-            to_move='Max', utility=0, board=self.board, moves=moves)
+            to_move='Min', utility=0, board=self.board, moves=moves)
 
     # returns the new state reached from the given state
     # and the given move. Assume the move is a valid move.
@@ -37,7 +37,7 @@ class GameOfNim(Game):
 
     # returns True if the given state represents the end of a game
     def terminal_test(self, state):
-        if self.actions(state=state) == []:
+        if state.board == [0, 0, 0, 0]:
             return True
         else:
             return False
