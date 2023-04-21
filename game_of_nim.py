@@ -12,7 +12,7 @@ class GameOfNim(Game):
         moves = [(i, j+1) for i, val in enumerate(board)
                  if val != 0 for j in range(val)]
         self.initial = GameState(
-            to_move='Min', utility=0, board=self.board, moves=moves)
+            to_move='Max', utility=0, board=self.board, moves=moves)
 
     # returns the new state reached from the given state
     # and the given move. Assume the move is a valid move.
@@ -46,9 +46,9 @@ class GameOfNim(Game):
     # players don't matter as long as they are distinct)
     def utility(self, state, player):
         if self.terminal_test(state) == True and player == "Max":
-            return 1
-        else:
             return -1
+        else:
+            return 1
 
     # returns the player whose turn it is to move.
     # The default implementation in abstract class Game should be sufficient.
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     print(nim.initial.moves)
     print(nim.result(nim.initial, (1, 3)))
     # computer moves first
-    utility = nim.play_game(alpha_beta_player, query_player)
+    utility = nim.play_game(alpha_beta_player, random_player)
     if (utility < 0):
         print("MIN won the game")
     else:
