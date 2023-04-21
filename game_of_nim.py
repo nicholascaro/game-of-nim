@@ -12,7 +12,7 @@ class GameOfNim(Game):
         moves = [(i, j+1) for i, val in enumerate(board)
                  if val != 0 for j in range(val)]
         self.initial = GameState(
-            to_move='Min', utility=0, board=self.board, moves=moves)
+            to_move='Max', utility=0, board=self.board, moves=moves)
 
     # returns the new state reached from the given state
     # and the given move. Assume the move is a valid move.
@@ -37,18 +37,14 @@ class GameOfNim(Game):
 
     # returns True if the given state represents the end of a game
     def terminal_test(self, state):
-        if state.board == [0, 0, 0, 0]:
-            return True
-        else:
-            return False
+        return not self.actions(state)
 
     # returns +1 if MAX wins, -1 if MIN wins (the "names" of the x
     # players don't matter as long as they are distinct)
     def utility(self, state, player):
-        if self.terminal_test(state) == True and player == "Max":
-            return -1
-        else:
-            return 1
+        if self.terminal_test(state):
+            if state.to_move == "Max": return -1
+            else: return 1
 
     # returns the player whose turn it is to move.
     # The default implementation in abstract class Game should be sufficient.
@@ -63,9 +59,10 @@ if __name__ == "__main__":
     print(nim.initial.board)  # must be [0, 5, 3, 1]
     # must be [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 2), (2, 3), (3, 1)]
     print(nim.initial.moves)
-    print(nim.result(nim.initial, (1, 3)))
+    # print(nim.result(nim.initial, (1, 3)))
     # computer moves first
     utility = nim.play_game(alpha_beta_player, random_player)
+    print(utility)
     if (utility < 0):
         print("MIN won the game")
     else:
